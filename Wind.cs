@@ -9,31 +9,31 @@ public partial class Wind : Area2D
 	
 	private float _speed;
 	
+	public bool Direction {get; set;}
+	
 	
 	public override void _Ready()
 	{
-		
 
-		switch (GD.RandRange(0, 1))
-		{
-			
-			case 0:
-				_speed = 100;
-				break;
-			case 1:
-				_speed = -100;
-				break;
-			default:
-				_speed = 0;
-				break;
-			
-		}
+
 
 	}
 
 	
 	public override void _Process(double delta)
 	{
+		
+		if (Direction )
+		{
+			_speed = 100;
+		}
+		else if (Direction == false)
+		{
+
+			_speed = -100;
+
+		}
+		
 	}
 
 
