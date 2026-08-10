@@ -23,6 +23,32 @@ public partial class Player : CharacterBody2D
 		Velocity = velocity;
 		MoveAndSlide();
 		
-
+		
 	}
+
+
+	public void OnArea2dAreaEntered(Area2D area)
+	{
+
+
+		if (area.IsInGroup("Wind"))
+		{
+
+			var wind = area as Wind;
+			GD.Print("Wind floating balloon!!");
+			
+			// Float balloon left or right depending on wind direction.
+			
+			Vector2 velocity = Velocity;
+			
+			velocity.X = wind.GetSpeed();
+			Velocity = velocity;
+			
+			
+		}
+		
+		//GD.Print("OnArea2dAreaEntered");
+		
+	}
+	
 }
