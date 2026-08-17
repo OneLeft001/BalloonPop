@@ -37,7 +37,9 @@ public partial class WindDirection : RigidBody2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		
+
+		MoveAndCollide(new Vector2(0, 1));
+
 	}
 
 

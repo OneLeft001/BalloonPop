@@ -9,6 +9,8 @@ public partial class WindSpawn : Node2D
 	private PackedScene _windBody;
 	private List<RigidBody2D> _windList;
 	private int _initialWindCount = 6;
+	private bool _initialWind = false;
+	private bool _setWindDirection = false;
 	
 	public override void _Ready()
 	{
@@ -17,6 +19,7 @@ public partial class WindSpawn : Node2D
 		//this.GlobalPosition = new Vector2(0, 0);
 		
 		InitialSpawn();
+		_initialWind = true;
 		
 
 	}
@@ -38,13 +41,7 @@ public partial class WindSpawn : Node2D
 		for (int i = 0; i < _initialWindCount; i++)
 		{
 			
-			var wind = _windBody.Instantiate() as RigidBody2D;
-			
-			//wind.SetPosition(this.GlobalPosition);
-			//wind.SetGlobalPosition(this.GlobalPosition);
-			
-			_windList.Add(wind);
-			AddChild(wind);
+			InstantiateWind();
 			
 		}
 
@@ -79,5 +76,39 @@ public partial class WindSpawn : Node2D
 		
 		
 	}
+
+	private void InstantiateWind()
+	{
+		
+		var wind = _windBody.Instantiate() as RigidBody2D;
+		var windScript = wind as WindDirection;
+		windScript.Direction = _setWindDirection;
+		_windList.Add(wind);
+		AddChild(wind);
+
+		if (_setWindDirection)
+		{
+			_setWindDirection = false;
+		}
+		else
+		{
+			_setWindDirection = true;
+		}
+		
+	}
+
+	public void OnArea2DAreaExited(Area2D area)
+	{
+
+		if (_initialWind)
+		{
+
+			GD.Print(area);
+			InstantiateWind();
+
+		}
+
+	}
+	
 	
 }

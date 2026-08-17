@@ -34,6 +34,8 @@ public partial class Wind : Area2D
 
 		}
 		
+		
+		
 	}
 
 
