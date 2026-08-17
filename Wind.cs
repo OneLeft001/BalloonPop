@@ -15,7 +15,7 @@ public partial class Wind : Area2D
 	public override void _Ready()
 	{
 
-
+		
 
 	}
 

@@ -6,14 +6,18 @@ public partial class WindDirection : RigidBody2D
 {
 
 	[Export] public bool Direction;
-	
+	[Export] public RigidBody2D WindBody;
+
 	private Area2D _area2D;
 	private List<Sprite2D> _wind;
 	private bool _checkWind = false;
-	
-	// Called when the node enters the scene tree for the first time.
+
+
+
+// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		
 		
 		_wind = new List<Sprite2D>();
 		PopulateWindSpriteList();
@@ -21,16 +25,12 @@ public partial class WindDirection : RigidBody2D
 
 		
 		
-		
 		_area2D = GetNode<Area2D>("Area2D");
 		
-		GD.Print(_area2D);
 		
 		Wind wind = _area2D as Wind;
 		
-		GD.Print(wind);
 		
-		GD.Print(wind.GetSpeed());
 		wind.Direction = this.Direction;
 	}
 
@@ -52,7 +52,7 @@ public partial class WindDirection : RigidBody2D
 
 			if (children[i] is Sprite2D)
 			{
-					
+				
 				_wind.Add((Sprite2D)children[i]);
 					
 			}
