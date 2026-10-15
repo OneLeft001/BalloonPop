@@ -11,6 +11,7 @@ public partial class WindSpawn : Node2D
 	private int _initialWindCount = 6;
 	private bool _initialWind = false;
 	private bool _setWindDirection = false;
+	private bool _continueSpawn = false;
 	
 	public override void _Ready()
 	{
@@ -19,7 +20,7 @@ public partial class WindSpawn : Node2D
 		//this.GlobalPosition = new Vector2(0, 0);
 		
 		InitialSpawn();
-		_initialWind = true;
+		//_initialWind = true;
 		
 
 	}
@@ -27,7 +28,9 @@ public partial class WindSpawn : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+
 		
+
 	}
 
 
@@ -38,11 +41,15 @@ public partial class WindSpawn : Node2D
 		_windBody = GD.Load<PackedScene>("res://Scenes//wind.tscn");
 		_windList = new List<RigidBody2D>();
 
-		for (int i = 0; i < _initialWindCount; i++)
+		if (_windBody != null)
 		{
-			
-			InstantiateWind();
-			
+			for (int i = 0; i < _initialWindCount; i++)
+			{
+
+				
+				InstantiateWind();
+
+			}
 		}
 
 
@@ -72,6 +79,7 @@ public partial class WindSpawn : Node2D
 			}
 			
 		}
+		_initialWind = true;
 
 		
 		
@@ -79,34 +87,55 @@ public partial class WindSpawn : Node2D
 
 	private void InstantiateWind()
 	{
-		
+	
+		_setWindDirection = GetWindDirection(_setWindDirection);
+
 		var wind = _windBody.Instantiate() as RigidBody2D;
 		var windScript = wind as WindDirection;
-		windScript.Direction = _setWindDirection;
-		_windList.Add(wind);
-		AddChild(wind);
 
-		if (_setWindDirection)
+		if (wind != null && windScript != null)
 		{
-			_setWindDirection = false;
+			
+			windScript.Direction = _setWindDirection;
+
+			var spawnArea = FindChild("Area2D") as Area2D;
+			if (spawnArea != null)
+			{
+				
+				wind.GlobalPosition = new Vector2(0, spawnArea.GlobalScale.Y + (int)wind.GlobalPosition.Y);
+				
+				_windList.Add(wind);
+				CallDeferred("add_child", wind);
+				
+			}
+			
 		}
-		else
+
+
+	}
+
+	public bool GetWindDirection(bool setWindDirection)
+	{
+		if (setWindDirection)
 		{
-			_setWindDirection = true;
+			return false;
 		}
-		
+
+		return true;
+
 	}
 
 	public void OnArea2DAreaExited(Area2D area)
 	{
 
-		if (_initialWind)
+		if (_initialWind && _windBody != null)
 		{
-
-			GD.Print(area);
 			InstantiateWind();
-
+			
 		}
+		
+		
+		
 
 	}
 	
